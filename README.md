@@ -1,5 +1,7 @@
 # Elder Sepsis CARER-TAMF Prototype
 
+A Sepsis Agent System for early recognition of septic shock.
+
 This project is a modular prototype for elderly sepsis adverse-outcome modeling. It combines:
 
 - TAMF-style multi-source time-series encoding for laboratory, vital-sign, and treatment data.
@@ -120,4 +122,3 @@ python scripts\tools\run_multiagent_flash_compare.py `
   --request-note-limit 2400 `
   --log-dir log/deepseek_multiagent_5_original_preprocess_no_memory
 ```
-
