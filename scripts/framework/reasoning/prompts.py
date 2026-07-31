@@ -73,9 +73,8 @@ CLINICAL_REASONING_USER_PROMPT_TEMPLATE = """Please process the following patien
 - Platelets (×10⁹/L): {platelet_list}
 - Neutrophil count (×10⁹/L): {neutrophil_list}
 - Lymphocyte count (×10⁹/L): {lymphocyte_list}
-- Vasopressor use: {vasopressor_status} (if used, describe dose trend, e.g., "continuous norepinephrine infusion, dose stable/increasing/decreasing")
-- Mechanical ventilation: {ventilation_status}
-这一部分就是所纳入的特征的罗列
+- Vasopressor use: {vasopressor_status} (0 = not used, 1 = used; if used, describe dose trend, e.g., "continuous norepinephrine infusion, dose stable/increasing/decreasing")
+- Mechanical ventilation: {ventilation_status} (0 = not used, 1 = used)
 
 ### 3. Raw Admission Record Text (containing de-identification marks such as ____, date placeholders, etc.) {admission_text_raw}
 
@@ -217,10 +216,12 @@ def build_focused_clinical_reasoning_user_prompt(
     if "vasopressors" in dynamic_keys:
         dynamic_lines.append(
             f'- Vasopressor use: {_list_text(_series_values(summary, "vasopressors"))} '
-            '(if used, describe dose trend, e.g., "continuous norepinephrine infusion, dose stable/increasing/decreasing")'
+            '(0 = not used, 1 = used; if used, describe dose trend, e.g., "continuous norepinephrine infusion, dose stable/increasing/decreasing")'
         )
     if "ventilation" in dynamic_keys:
-        dynamic_lines.append(f"- Mechanical ventilation: {_list_text(_series_values(summary, 'ventilation'))}")
+        dynamic_lines.append(
+            f"- Mechanical ventilation: {_list_text(_series_values(summary, 'ventilation'))} (0 = not used, 1 = used)"
+        )
 
     return "\n".join(
         [
@@ -231,7 +232,6 @@ def build_focused_clinical_reasoning_user_prompt(
             "",
             "### 2. Dynamic Time-Series Data (past 24 hours, 1 point per hour, 24 points total) Please ignore exact point-by-point values and focus only on overall trends and extreme values:",
             "\n".join(dynamic_lines),
-            "这一部分就是所纳入的特征的罗列",
             "",
             f"### 3. Raw Admission Record Text (containing de-identification marks such as ____, date placeholders, etc.) {str(admission_text_raw).strip() or 'unavailable'}",
             "",
