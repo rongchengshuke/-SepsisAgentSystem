@@ -1,0 +1,64 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+
+# Runtime outputs
+/outputs/
+/predictions/
+/log/
+/log_archive/
+/llm_reasoning/
+/reasoning/cases/
+/reasoning/resampled_*/
+/reasoning/colacare_timeseries*/
+/reasoning/*_outputs*/
+/reasoning/*.csv
+/reasoning/*.jsonl
+
+# MIMIC / derived patient data
+/data/
+/checkpoints/
+
+# Model weights and downloaded model caches
+/models/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+
+# Upstream source snapshots and local preprocessing packages
+/vendor/
+/data_preprocessing_package_20260716/
+/data_preprocessing_package_20260716_excluded_llm_code/
+
+# Extracted/copyrighted knowledge-base chunks and temporary RAG docs
+/knowledge_base/global_docs/
+/knowledge_base/tmp_single_case_modality_docs/
+
+# Local source/reference materials
+/资料/
+*.pdf
+/docs/target_pdf_images/
+
+# Local change history with machine-specific notes
+/修改/
+/修改下/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1180" viewBox="0 0 1800 1180">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <style>
+      .bg { fill: #f6f8f4; }
+      .title { font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; font-size: 34px; font-weight: 700; fill: #1f2937; }
+      .subtitle { font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; font-size: 18px; fill: #475569; }
+      .col-title { font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; font-size: 22px; font-weight: 700; fill: #111827; }
+      .box-title { font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #111827; }
+      .box-text { font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; font-size: 15px; fill: #334155; }
+      .small { font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; font-size: 13px; fill: #475569; }
+      .code { font-family: Consolas, "Microsoft YaHei", monospace; font-size: 13px; fill: #334155; }
+      .line { stroke: #475569; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #94a3b8; stroke-width: 1.4; fill: none; marker-end: url(#arrow); }
+      .lane { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.2; rx: 16; }
+      .data { fill: #e0f2fe; stroke: #38bdf8; stroke-width: 1.5; rx: 12; }
+      .prep { fill: #ecfccb; stroke: #84cc16; stroke-width: 1.5; rx: 12; }
+      .enc { fill: #fef3c7; stroke: #f59e0b; stroke-width: 1.5; rx: 12; }
+      .fusion { fill: #ede9fe; stroke: #8b5cf6; stroke-width: 1.5; rx: 12; }
+      .out { fill: #ffe4e6; stroke: #fb7185; stroke-width: 1.5; rx: 12; }
+      .rag { fill: #dcfce7; stroke: #22c55e; stroke-width: 1.5; rx: 12; }
+      .tag { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1; rx: 8; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1800" height="1180"/>
+  <text class="title" x="60" y="64">当前图一框架总览：多模态表征、RAG 推理与多任务预测</text>
+  <text class="subtitle" x="60" y="96">数据路径、三元组格式、编码器、融合层、输出任务和训练损失均按当前 program/configs/default.yaml 与 scripts 实现整理</text>
+
+  <rect class="lane" x="40" y="130" width="310" height="950"/>
+  <rect class="lane" x="380" y="130" width="330" height="950"/>
+  <rect class="lane" x="740" y="130" width="430" height="950"/>
+  <rect class="lane" x="1200" y="130" width="260" height="950"/>
+  <rect class="lane" x="1490" y="130" width="270" height="950"/>
+
+  <text class="col-title" x="70" y="172">1. 输入数据</text>
+  <text class="col-title" x="410" y="172">2. 预处理与三元组</text>
+  <text class="col-title" x="770" y="172">3. 各模态编码器</text>
+  <text class="col-title" x="1230" y="172">4. 融合层</text>
+  <text class="col-title" x="1520" y="172">5. 输出与损失</text>
+
+  <rect class="data" x="70" y="205" width="250" height="120"/>
+  <text class="box-title" x="90" y="232">静态结构化数据</text>
+  <text class="box-text" x="90" y="258">来源：study_cohort.csv</text>
+  <text class="box-text" x="90" y="282">年龄、性别、BMI、CCI</text>
+  <text class="box-text" x="90" y="306">合并症等，不随小时变化</text>
+
+  <rect class="data" x="70" y="350" width="250" height="150"/>
+  <text class="box-title" x="90" y="377">动态结构化数据</text>
+  <text class="box-text" x="90" y="403">lab_test.csv：检验指标</text>
+  <text class="box-text" x="90" y="427">vital_uo_sofa.csv：生命体征</text>
+  <text class="box-text" x="90" y="451">treatment.csv：治疗干预</text>
+  <text class="box-text" x="90" y="475">按 ICU 小时变化</text>
+
+  <rect class="data" x="70" y="525" width="250" height="105"/>
+  <text class="box-title" x="90" y="552">病历文本</text>
+  <text class="box-text" x="90" y="578">data/multimodal/</text>
+  <text class="code" x="90" y="602">history_only_notes.csv</text>
+
+  <rect class="data" x="70" y="655" width="250" height="105"/>
+  <text class="box-title" x="90" y="682">影像数据</text>
+  <text class="box-text" x="90" y="708">data/multimodal/image_manifest.csv</text>
+  <text class="code" x="90" y="732">synthetic_cxr/*.png</text>
+
+  <rect class="rag" x="70" y="785" width="250" height="145"/>
+  <text class="box-title" x="90" y="812">RAG 与大模型推理</text>
+  <text class="box-text" x="90" y="838">knowledge_base/docs</text>
+  <text class="box-text" x="90" y="862">DeepSeek：deepseek-v4-flash</text>
+  <text class="box-text" x="90" y="886">生成 reasoning_text</text>
+  <text class="code" x="90" y="910">data/reasoning/reasoning_texts.csv</text>
+
+  <rect class="prep" x="410" y="220" width="270" height="155"/>
+  <text class="box-title" x="430" y="247">build_triples.py</text>
+  <text class="box-text" x="430" y="273">筛选老年脓毒症队列</text>
+  <text class="box-text" x="430" y="297">切 24 小时窗口，步长 4 小时</text>
+  <text class="box-text" x="430" y="321">生成 sample_index、labels、static</text>
+  <text class="code" x="430" y="345">data/processed_dataset_outputs/</text>
+
+  <rect class="prep" x="410" y="410" width="270" height="220"/>
+  <text class="box-title" x="430" y="437">三元组格式</text>
+  <text class="code" x="430" y="463">sample_id</text>
+  <text class="code" x="430" y="485">stay_id</text>
+  <text class="code" x="430" y="507">window_start / window_end</text>
+  <text class="code" x="430" y="529">time</text>
+  <text class="code" x="430" y="551">source = lab / vital / treatment</text>
+  <text class="code" x="430" y="573">variable</text>
+  <text class="code" x="430" y="595">value / observed</text>
+
+  <rect class="prep" x="410" y="665" width="270" height="170"/>
+  <text class="box-title" x="430" y="692">进入模型前恢复矩阵</text>
+  <text class="box-text" x="430" y="718">每个 source 单独成网格：</text>
+  <text class="code" x="430" y="742">x_list: 数值 [time, variable]</text>
+  <text class="code" x="430" y="766">m_list: mask [time, variable]</text>
+  <text class="code" x="430" y="790">t_list: 时间 [time, 1]</text>
+  <text class="box-text" x="430" y="814">缺失值由 mask 表示</text>
+
+  <rect class="enc" x="780" y="200" width="350" height="145"/>
+  <text class="box-title" x="800" y="227">EHR 动态编码器：TAMF</text>
+  <text class="box-text" x="800" y="253">UpstreamCompatibleTripleTAMFEncoder</text>
+  <text class="box-text" x="800" y="277">输入：lab / vital / treatment 三路矩阵</text>
+  <text class="box-text" x="800" y="301">内部维度 256，8 heads；输出投影到 128</text>
+  <text class="code" x="800" y="325">ehr_embedding</text>
+
+  <rect class="enc" x="780" y="370" width="350" height="105"/>
+  <text class="box-title" x="800" y="397">静态编码器：StaticEncoder</text>
+  <text class="box-text" x="800" y="423">MLP：Linear + LayerNorm + GELU</text>
+  <text class="code" x="800" y="447">static_embedding, dim=128</text>
+
+  <rect class="enc" x="780" y="500" width="350" height="120"/>
+  <text class="box-title" x="800" y="527">病历文本编码器</text>
+  <text class="box-text" x="800" y="553">BioClinicalBERT</text>
+  <text class="box-text" x="800" y="577">max_length=512，冻结前 8 层</text>
+  <text class="code" x="800" y="601">note_embedding, dim=128</text>
+
+  <rect class="enc" x="780" y="645" width="350" height="120"/>
+  <text class="box-title" x="800" y="672">RAG 推理文本编码器</text>
+  <text class="box-text" x="800" y="698">BioClinicalBERT</text>
+  <text class="box-text" x="800" y="722">max_length=512，冻结前 8 层</text>
+  <text class="code" x="800" y="746">reasoning_embedding, dim=128</text>
+
+  <rect class="enc" x="780" y="790" width="350" height="120"/>
+  <text class="box-title" x="800" y="817">影像编码器</text>
+  <text class="box-text" x="800" y="843">Xray SigLIP</text>
+  <text class="box-text" x="800" y="867">image_trainable=false，投影到 128</text>
+  <text class="code" x="800" y="891">image_embedding</text>
+
+  <rect class="fusion" x="1230" y="285" width="200" height="315"/>
+  <text class="box-title" x="1250" y="314">五路 Token 融合</text>
+  <text class="box-text" x="1250" y="342">Figure1TokenTransformerFusion</text>
+  <text class="box-text" x="1250" y="372">输入 5 个 token：</text>
+  <text class="code" x="1250" y="398">[EHR]</text>
+  <text class="code" x="1250" y="420">[Note]</text>
+  <text class="code" x="1250" y="442">[Reasoning]</text>
+  <text class="code" x="1250" y="464">[Image]</text>
+  <text class="code" x="1250" y="486">[Static]</text>
+  <text class="box-text" x="1250" y="516">TransformerEncoder</text>
+  <text class="box-text" x="1250" y="540">attention pooling</text>
+  <text class="code" x="1250" y="568">fused_embedding, dim=128</text>
+
+  <rect class="out" x="1515" y="225" width="215" height="190"/>
+  <text class="box-title" x="1535" y="252">分类输出头</text>
+  <text class="box-text" x="1535" y="278">Binary head</text>
+  <text class="code" x="1535" y="304">death_6 / death_12</text>
+  <text class="code" x="1535" y="326">death_24 / death_48</text>
+  <text class="code" x="1535" y="348">los_in_icu_class</text>
+  <text class="code" x="1535" y="370">los_in_hospital_class</text>
+  <text class="box-text" x="1535" y="394">损失：BCEWithLogitsLoss</text>
+
+  <rect class="out" x="1515" y="450" width="215" height="230"/>
+  <text class="box-title" x="1535" y="477">回归输出头</text>
+  <text class="box-text" x="1535" y="503">Regression head</text>
+  <text class="code" x="1535" y="529">los_in_icu</text>
+  <text class="code" x="1535" y="551">los_in_hospital</text>
+  <text class="code" x="1535" y="573">sofa</text>
+  <text class="code" x="1535" y="595">resp / coag / liver</text>
+  <text class="code" x="1535" y="617">cardio / cns / renal</text>
+  <text class="box-text" x="1535" y="649">损失：SmoothL1Loss</text>
+
+  <rect class="out" x="1515" y="715" width="215" height="155"/>
+  <text class="box-title" x="1535" y="742">CARER 对齐损失</text>
+  <text class="box-text" x="1535" y="770">对齐 EHR 与 reasoning 表征</text>
+  <text class="code" x="1535" y="796">L_align = 1/b² ||QE-QR||²</text>
+  <text class="box-text" x="1535" y="822">当前权重 lambda=0.1</text>
+  <text class="box-text" x="1535" y="846">总损失：BCE + SmoothL1 + lambda L_align</text>
+
+  <rect class="tag" x="410" y="890" width="270" height="105"/>
+  <text class="box-title" x="430" y="918">示例三元组</text>
+  <text class="code" x="430" y="944">37510196_1_25 | vital</text>
+  <text class="code" x="430" y="966">time=3 | heart_rate=112</text>
+  <text class="code" x="430" y="988">observed=1</text>
+
+  <path class="line" d="M 320 410 C 360 410, 365 300, 410 300"/>
+  <path class="line" d="M 320 265 C 360 265, 365 285, 410 285"/>
+  <path class="line" d="M 545 375 L 545 410"/>
+  <path class="line" d="M 545 630 L 545 665"/>
+  <path class="line" d="M 680 750 C 725 750, 735 275, 780 275"/>
+  <path class="line" d="M 320 257 C 520 160, 600 410, 780 420"/>
+  <path class="line" d="M 320 575 C 505 575, 600 560, 780 560"/>
+  <path class="line" d="M 320 708 C 505 708, 600 850, 780 850"/>
+  <path class="line" d="M 320 858 C 505 858, 600 705, 780 705"/>
+
+  <path class="line" d="M 1130 272 C 1180 272, 1190 350, 1230 355"/>
+  <path class="line" d="M 1130 422 C 1180 422, 1190 490, 1230 490"/>
+  <path class="line" d="M 1130 560 C 1180 560, 1190 440, 1230 430"/>
+  <path class="line" d="M 1130 705 C 1180 705, 1190 465, 1230 455"/>
+  <path class="line" d="M 1130 850 C 1180 850, 1190 515, 1230 520"/>
+
+  <path class="line" d="M 1430 430 C 1470 430, 1475 315, 1515 315"/>
+  <path class="line" d="M 1430 465 C 1470 465, 1475 560, 1515 560"/>
+  <path class="thin" d="M 955 765 C 1230 945, 1425 820, 1515 790"/>
+  <path class="thin" d="M 955 345 C 1230 900, 1425 820, 1515 790"/>
+
+  <rect class="tag" x="70" y="965" width="250" height="80"/>
+  <text class="box-title" x="90" y="993">当前关键配置</text>
+  <text class="code" x="90" y="1018">embed_dim=128, heads=4</text>
+  <text class="code" x="90" y="1040">fusion=figure1_token_transformer</text>
+
+  <text class="small" x="60" y="1130">说明：动态结构化数据先转 long-form triples，再在 Dataset 中恢复为每个 source 的 [time, variable] 网格；文本、影像、静态数据不转三元组，各自直接进入对应编码器。</text>
+</svg>

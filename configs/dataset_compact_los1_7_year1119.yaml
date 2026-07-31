@@ -1,0 +1,114 @@
+data:
+  mimiciv_dir: ../mimiciv/mimiciv
+  processed_dir: data/processed_dataset_outputs_compact_los1_7_year1119
+  outlier_range_path: ../outlier_range_check.csv
+  masked_mimic_dir: ../mimiciv_preprocessed_masked/mimic
+  llm_dynamic_csv: data/reasoning/mimic_dynamic_llm_imputed.csv
+  llm_static_csv: data/reasoning/mimic_static_llm_preprocessed.csv
+  reasoning_csv: data/reasoning/reasoning_texts.csv
+  note_csv: data/multimodal/history_only_notes.csv
+  image_manifest_csv: data/multimodal/image_manifest.csv
+  cohort:
+    min_age: 65
+    min_los_icu_day: 1
+    max_los_icu_day: 7
+    anchor_year_groups:
+      - 2011 - 2013
+      - 2014 - 2016
+      - 2017 - 2019
+  windows:
+    length_hours: 24
+    step_hours: 4
+    min_start_hour: 1
+    max_windows_per_stay: 8
+  sources:
+    lab:
+      file: lab_test.csv
+      keep_zero: false
+    vital:
+      file: vital_uo_sofa.csv
+      keep_zero: true
+    treatment:
+      file: treatment.csv
+      keep_zero: true
+
+rag:
+  enabled: false
+  literature_dir: 璧勬枡
+  global_docs_dir: knowledge_base/global_docs
+
+reasoning:
+  workflow: colacare_evolver
+  default_backend: glm
+  # legacy shared-memory fallback:
+  # experience_store_path: data/reasoning/colacare_evolver_experience.json
+  experience_store_paths:
+    meta_agent: data/reasoning/meta_agent_experience.json
+    doctor_1: data/reasoning/doctor_1_experience.json
+    doctor_2: data/reasoning/doctor_2_experience.json
+    doctor_3: data/reasoning/doctor_3_experience.json
+  experience_top_k: 3
+  max_consult_rounds: 2
+  enable_self_evolution: true
+  self_evolution_mode: post_prediction
+  # 1/all: every case; 2/error_only: only wrong predictions;
+  # 3/uncertain_or_error: wrong or probability near 0.5.
+  memory_update_policy: all
+
+model:
+  embed_dim: 128
+  num_heads: 4
+  dropout: 0.1
+  ehr_encoder_backend: tamf_upstream_compatible
+  ehr_encoder_internal_embed_dim: 256
+  ehr_encoder_internal_num_heads: 8
+  # old weight path kept for reference:
+  # ehr_encoder_weights: vendor/TAMF/deep_learning/checkpoints/stage1_split_B_saved/checkpoint_epoch_8_best_auc.pt
+  ehr_encoder_weights: models/encoders/multimodal_encoder/weights/stage1_compact_local_death48_best_test_loss_encoder_only.pt
+  # Requirement 5: raw admission notes are used as LLM input only.
+  # Keep the old BioClinicalBERT fields below for easy rollback, but do not
+  # encode raw notes again inside the Figure-1 model.
+  note_text_encoder: empty
+  # old raw-note encoder path:
+  # note_text_model_name: models/encoders/text_encoder/bioclinicalbert/hf_cache/models--emilyalsentzer--Bio_ClinicalBERT/snapshots/d5892b39a4adaed74b92212a44081509db72f87b
+  note_text_model_name:
+  note_text_max_length: 512
+  note_text_freeze: false
+  note_text_freeze_first_n_layers: 8
+  reasoning_text_encoder: bioclinicalbert
+  reasoning_text_model_name: models/encoders/text_encoder/bioclinicalbert/hf_cache/models--emilyalsentzer--Bio_ClinicalBERT/snapshots/d5892b39a4adaed74b92212a44081509db72f87b
+  reasoning_text_max_length: 512
+  reasoning_text_freeze: false
+  reasoning_text_freeze_first_n_layers: 8
+  image_encoder: empty
+  image_model_name:
+  image_model_weights:
+  image_vendor_dir: vendor/CheXzero
+  image_trainable: false
+  fusion_backend: figure1_token_transformer
+  alignment:
+    lambda: 0.1
+  reasoning_dim: 128
+  deepseek:
+    base_url: https://api.deepseek.com
+    model_name: deepseek-v4-flash
+    reasoning_effort: medium
+    enable_thinking: true
+  glm:
+    # OpenAI-compatible endpoint verified locally with glm-4.7-flash.
+    # The Z.AI coding endpoint returned transient 429 overload during testing:
+    # https://api.z.ai/api/coding/paas/v4
+    base_url: https://open.bigmodel.cn/api/paas/v4/
+    model_name: glm-4.7-flash
+  qwen:
+    # Aliyun Bailian OpenAI-compatible endpoint. API key is read from
+    # QWEN_API_KEY, DASHSCOPE_API_KEY, or ALIBABA_API_KEY.
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    model_name: qwen-flash
+  tasks:
+    binary:
+      - death_12
+      - death_24
+      - death_48
+    regression:
+      []
